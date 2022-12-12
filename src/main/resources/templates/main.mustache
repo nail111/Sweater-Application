@@ -5,6 +5,28 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<div>{{some}}</div>
+
+    <div>
+        <form method="post">
+            <input type="text" name="text" placeholder="Write a text"/>
+            <input type="text" name="tag" placeholder="Write a tag"/>
+            <button type="submit">Enter</button>
+        </form>
+    </div>
+
+    <div>Список сообщений:</div>
+        <form method="post">
+            <input type="text" name="filter" placeholder="Find by tag"/>
+            <button type="submit">Find</button>
+        </form>
+
+
+        {{#messages}}
+            <div>
+                <b>{{id}}</b>
+                <span>{{text}}</span>
+                <i>{{tag}}</i>
+            </div>
+        {{/messages}}
 </body>
 </html>

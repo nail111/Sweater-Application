@@ -16,22 +16,18 @@ public class GreetingController {
 
     private final MessageRepo messageRepo;
 
-    @GetMapping("/greeting")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
-            Map<String, Object> model
-    ) {
-        model.put("name", name);
+    @GetMapping
+    public String greeting() {
         return "greeting";
     }
 
-    @GetMapping
+    @GetMapping("/main")
     public String main(Map<String, Object> model) {
         model.put("messages", messageRepo.findAll());
         return "main";
     }
 
-    @PostMapping
+    @PostMapping("/main")
     public String addMessage(
             @RequestParam(required = false) String text,
             @RequestParam(required = false) String tag,

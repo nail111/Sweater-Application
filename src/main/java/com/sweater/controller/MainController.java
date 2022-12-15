@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-public class GreetingController {
+public class MainController {
 
     private final MessageRepo messageRepo;
 

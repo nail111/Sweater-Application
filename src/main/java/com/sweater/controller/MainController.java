@@ -1,8 +1,10 @@
 package com.sweater.controller;
 
 import com.sweater.model.Message;
+import com.sweater.model.User;
 import com.sweater.repo.MessageRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ public class MainController {
 
     @PostMapping("/main")
     public String addMessage(
+            @AuthenticationPrincipal User user,
             @RequestParam(required = false) String text,
             @RequestParam(required = false) String tag,
             @RequestParam(name = "filter", required = false, defaultValue = "") String filter,
@@ -36,7 +39,7 @@ public class MainController {
     ) {
 
         if ((text != null && !text.isBlank() && !text.isEmpty()) || (tag != null && !tag.isEmpty() && !tag.isBlank())) {
-            Message message = new Message(text, tag);
+            Message message = new Message(text, tag, user);
             messageRepo.save(message);
             model.put("messages", messageRepo.findAll());
         }

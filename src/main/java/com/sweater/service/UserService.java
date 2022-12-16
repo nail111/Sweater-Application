@@ -4,7 +4,6 @@ import com.sweater.model.Role;
 import com.sweater.model.User;
 import com.sweater.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +26,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User is not found");
+        }
+        return user;
     }
 
     public boolean addUser(User user) {

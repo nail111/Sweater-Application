@@ -3,8 +3,10 @@ package com.sweater.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
@@ -12,10 +14,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Please fill the text")
+    @Length(max = 255, message = "Message is too long")
     private String text;
+    @NotBlank(message = "Please fill the tag")
+    @Length(max = 255, message = "Tag is too long")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)

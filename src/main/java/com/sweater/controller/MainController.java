@@ -8,13 +8,13 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -32,8 +32,8 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Map<String, Object> model) {
-        model.put("messages", messageRepo.findAll());
+    public String main(Model model) {
+        model.addAttribute("messages", messageRepo.findAll());
         return "main";
     }
 
@@ -44,8 +44,8 @@ public class MainController {
             @RequestParam(required = false) String text,
             @RequestParam(required = false) String tag,
             @RequestParam(name = "filter", required = false, defaultValue = "") String filter,
-            Map<String, Object> model,
-            @RequestParam("file") MultipartFile file
+            Model model,
+            @RequestParam(name = "file", required = false) MultipartFile file
     ) {
 
         if ((text != null && !text.isBlank() && !text.isEmpty()) || (tag != null && !tag.isEmpty() && !tag.isBlank())) {
@@ -61,13 +61,13 @@ public class MainController {
                 message.setFilename(resultFilename);
             }
             messageRepo.save(message);
-            model.put("messages", messageRepo.findAll());
+            model.addAttribute("messages", messageRepo.findAll());
         }
 
         if (filter != null && !filter.isEmpty() && !filter.isBlank()) {
-            model.put("messages", messageRepo.findByTag(filter));
+            model.addAttribute("messages", messageRepo.findByTag(filter));
         } else {
-            model.put("messages", messageRepo.findAll());
+            model.addAttribute("messages", messageRepo.findAll());
         }
 
         return "main";
